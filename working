@@ -1,0 +1,61 @@
+1. Overview of the Hospital Management System (HMS)
+The system helps automate hospital operations like patient registration, doctor management, scheduling appointments, and storing medical records. The main data structures used are linked lists, hash maps, and queues. The code also uses algorithms like sorting and searching to efficiently manage and retrieve data.
+
+2. Key Classes and Their Roles
+The project is structured into three main classes: Patient, Doctor, and Hospital. Each serves a unique role in managing the hospital's operations.
+
+a. Patient Class
+This class handles the information related to a patient. It contains:
+
+name: Name of the patient.
+age: Age of the patient.
+patient_id: Unique ID for each patient.
+medical_history: A list storing the patient's medical records.
+The class also contains a next pointer to link the patient nodes, creating a linked list of patients. This linked list is used in the Hospital class to store patient information.
+
+b. Doctor Class
+The Doctor class stores information about a doctor:
+
+name: Name of the doctor.
+specialization: Medical specialization of the doctor.
+doctor_id: Unique ID for each doctor.
+available: Boolean value to track if the doctor is available.
+The doctors are stored in a hash map, where the doctor_id is the key. This allows for fast access to doctor information.
+
+c. Hospital Class
+This is the most important class that handles the operations of the hospital:
+
+Patients: Stored as a linked list, with each node containing patient details.
+Doctors: Managed using a hash map for efficient lookup.
+Appointments: Stored using a queue to manage the first-in, first-out order of appointment requests.
+3. Key Functions and Their Purpose
+a. Patient Management
+add_patient: This function dynamically adds new patients to the system. It creates a new Patient object and adds it to the linked list of patients.
+display_patients: Prints out the details of all the patients in the hospital.
+b. Doctor Management
+add_doctor: Adds a doctor to the hospital system by creating a Doctor object and storing it in the hash map using doctor_id as the key.
+display_doctors: Prints out all doctors' information (name, specialization, availability).
+c. Appointment Scheduling
+schedule_appointment: This function adds a patient's appointment request to the queue based on doctor availability. It checks if the doctor is available, then schedules the appointment by adding the patient to the queue.
+d. Medical Record Management
+manage_records: This function can update or display a patient's medical history.
+4. Data Structures and Their Importance
+Linked List (Patients): Each patient is represented as a node in a linked list. This allows dynamic memory allocation and efficient insertion of patients.
+Hash Map (Doctors): Doctor information is stored using a hash map for constant time lookup. This is useful when searching for doctor information using doctor_id.
+Queue (Appointments): Appointments are managed using a queue to ensure patients are seen in the order they schedule their appointments.
+5. Algorithms Implemented
+Binary Search: Used to search for doctors efficiently by their doctor_id when looking them up in the sorted list.
+Merge Sort: This is used to sort doctors by their specialization, ensuring an optimal O(n log n) time complexity for sorting.
+6. How the System Works
+When a new patient is registered, the system dynamically adds them to a linked list.
+Doctors are stored in a hash map, allowing for quick searching by their ID.
+When an appointment is scheduled, it checks for doctor availability and adds the patient to a queue, ensuring appointments are handled in a first-come, first-served manner.
+The system allows doctors and patients to be searched efficiently, and medical records can be updated as needed.
+7. Important Points to Emphasize for Viva
+Data Structures Choice: Explain why linked lists are used for patients, hash maps for doctors, and queues for appointments (to maintain order).
+Efficiency: The use of hash maps makes searching for doctor information fast, while the sorting and searching algorithms optimize data access.
+Object-Oriented Programming (OOP): Each entity (patient, doctor, hospital) is encapsulated into classes, demonstrating principles of OOP like encapsulation and modularity.
+If you’re asked about challenges, you can mention:
+
+Efficient data handling (e.g., searching and sorting).
+Managing dynamic memory allocation (especially with linked lists)
