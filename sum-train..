@@ -1,0 +1,196 @@
+#include <iostream>
+#include <unordered_map>
+#include <queue>
+#include <string>
+
+using namespace std;
+
+class Patient {
+public:
+    string name;
+    int age;
+    int patient_id;
+    string medical_history;
+    Patient* next;
+
+    Patient(string n, int a, int id, string mh = "")
+        : name(n), age(a), patient_id(id), medical_history(mh), next(nullptr) {}
+};
+
+class Doctor {
+public:
+    string name;
+    string specialization;
+    int id;
+    bool available;
+
+    // Default constructor
+    Doctor() : name(""), specialization(""), id(0), available(true) {}
+
+    // Parameterized constructor
+    Doctor(string n, string s, int id, bool avail = true)
+        : name(n), specialization(s), id(id), available(avail) {}
+};
+
+class Hospital {
+private:
+    Patient* patient_head;  // Linked list of patients
+    unordered_map<int, Doctor> doctors;  // Hash map for doctor info
+    queue<pair<int, int>> appointments;  // Queue for appointment scheduling
+
+public:
+    Hospital() : patient_head(nullptr) {}
+
+    // Add a new patient
+    void add_patient(string name, int age, int patient_id, string medical_history = "") {
+        Patient* new_patient = new Patient(name, age, patient_id, medical_history);
+        if (!patient_head) {
+            patient_head = new_patient;
+        } else {
+            Patient* current = patient_head;
+            while (current->next) {
+                current = current->next;
+            }
+            current->next = new_patient;
+        }
+        cout << "Patient " << name << " added successfully.\n";
+    }
+
+    // Display all patients
+    void display_patients() {
+        if (!patient_head) {
+            cout << "No patients found.\n";
+            return;
+        }
+        Patient* current = patient_head;
+        while (current) {
+            cout << "Patient ID: " << current->patient_id << ", Name: " << current->name
+                 << ", Age: " << current->age << ", Medical History: " << current->medical_history << "\n";
+            current = current->next;
+        }
+    }
+
+    // Add a new doctor
+    void add_doctor(string name, string specialization, int doctor_id) {
+        Doctor new_doctor(name, specialization, doctor_id);
+        doctors[doctor_id] = new_doctor;
+        cout << "Doctor " << name << " added successfully.\n";
+    }
+
+    // Display all doctors
+    void display_doctors() {
+        if (doctors.empty()) {
+            cout << "No doctors found.\n";
+            return;
+        }
+        for (const auto& pair : doctors) {
+            const Doctor& doc = pair.second;
+            cout << "Doctor ID: " << doc.id << ", Name: " << doc.name
+                 << ", Specialization: " << doc.specialization
+                 << ", Available: " << (doc.available ? "Yes" : "No") << "\n";
+        }
+    }
+
+    // Search doctor by ID
+    void search_doctor(int doctor_id) {
+        if (doctors.find(doctor_id) != doctors.end()) {
+            Doctor& doc = doctors[doctor_id];
+            cout << "Doctor found: ID: " << doc.id << ", Name: " << doc.name
+                 << ", Specialization: " << doc.specialization
+                 << ", Available: " << (doc.available ? "Yes" : "No") << "\n";
+        } else {
+            cout << "Doctor not found.\n";
+        }
+    }
+
+    // Schedule an appointment between a patient and a doctor
+    void schedule_appointment(int patient_id, int doctor_id) {
+        if (doctors.find(doctor_id) != doctors.end() && doctors[doctor_id].available) {
+            appointments.push({patient_id, doctor_id});
+            cout << "Appointment scheduled for Patient ID " << patient_id << " with Doctor ID " << doctor_id << ".\n";
+        } else {
+            cout << "Doctor not available or does not exist.\n";
+        }
+    }
+
+    // Process the next appointment in the queue
+    void process_appointment() {
+        if (appointments.empty()) {
+            cout << "No appointments to process.\n";
+            return;
+        }
+        auto appointment = appointments.front();
+        appointments.pop();
+        int patient_id = appointment.first;
+        int doctor_id = appointment.second;
+        cout << "Processing appointment: Patient ID " << patient_id << " with Doctor ID " << doctor_id << ".\n";
+    }
+};
+
+int main() {
+    Hospital hospital;
+    
+    int choice;
+    while (true) {
+        cout << "\nHospital Management System\n";
+        cout << "1. Add Patient\n";
+        cout << "2. Display Patients\n";
+        cout << "3. Add Doctor\n";
+        cout << "4. Display Doctors\n";
+        cout << "5. Search Doctor\n";
+        cout << "6. Schedule Appointment\n";
+        cout << "7. Process Appointment\n";
+        cout << "8. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+        
+        if (choice == 1) {
+            string name, medical_history;
+            int age, id;
+            cout << "Enter Patient Name: ";
+            cin >> name;
+            cout << "Enter Patient Age: ";
+            cin >> age;
+            cout << "Enter Patient ID: ";
+            cin >> id;
+            cout << "Enter Medical History (if any): ";
+            cin.ignore();
+            getline(cin, medical_history);
+            hospital.add_patient(name, age, id, medical_history);
+        } else if (choice == 2) {
+            hospital.display_patients();
+        } else if (choice == 3) {
+            string name, specialization;
+            int id;
+            cout << "Enter Doctor Name: ";
+            cin >> name;
+            cout << "Enter Doctor Specialization: ";
+            cin >> specialization;
+            cout << "Enter Doctor ID: ";
+            cin >> id;
+            hospital.add_doctor(name, specialization, id);
+        } else if (choice == 4) {
+            hospital.display_doctors();
+        } else if (choice == 5) {
+            int id;
+            cout << "Enter Doctor ID to search: ";
+            cin >> id;
+            hospital.search_doctor(id);
+        } else if (choice == 6) {
+            int patient_id, doctor_id;
+            cout << "Enter Patient ID: ";
+            cin >> patient_id;
+            cout << "Enter Doctor ID: ";
+            cin >> doctor_id;
+            hospital.schedule_appointment(patient_id, doctor_id);
+        } else if (choice == 7) {
+            hospital.process_appointment();
+        } else if (choice == 8) {
+            cout << "Exiting...\n";
+            break;
+        } else {
+            cout << "Invalid choice. Please try again.\n";
+        }
+    }
+    return 0;
+}
