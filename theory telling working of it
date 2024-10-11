@@ -1,0 +1,14 @@
+what to be used for 
+Features
+Add Patient: Add a new patient with their details.
+Display Patients: List all registered patients.
+Add Doctor: Add a doctor with their specialization and availability.
+Display Doctors: List all available doctors.
+Search Doctor: Search for a doctor by ID.
+Schedule Appointment: Schedule an appointment between a patient and a doctor.
+Process Appointment: Process the next appointment in the queue.
+Instructions
+Compile and run the program.
+Enter your choice based on the menu options.
+For adding patients and doctors, provide the necessary details.
+Schedule and process appointments to simulate the operations of a hospital management system.
